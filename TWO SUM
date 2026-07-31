@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+int main() {
+    int numsSize;
+    int target;
+    int index1 = -1;
+    int index2 = -1;
+
+    // 1. Get the size of the array from the user
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &numsSize);
+
+    int nums[numsSize]; // Create the array with the entered size
+
+    // 2. Get the array elements from the user
+    printf("Enter %d numbers:\n", numsSize);
+    for (int i = 0; i < numsSize; i++) {
+        scanf("%d", &nums[i]);
+    }
+
+    // 3. Get the target value from the user
+    printf("Enter the target sum: ");
+    scanf("%d", &target);
+
+    // 4. Find the two numbers using two loops
+    for (int i = 0; i < numsSize; i++) {
+        for (int j = i + 1; j < numsSize; j++) {
+            if (nums[i] + nums[j] == target) {
+                index1 = i;
+                index2 = j;
+                break; 
+            }
+        }
+        if (index1 != -1) {
+            break; 
+        }
+    }
+
+    // 5. Print the output
+    if (index1 != -1) {
+        printf("Output: [%d, %d]\n", index1, index2);
+    } else {
+        printf("No two numbers add up to the target.\n");
+    }
+
+    return 0;
+}
