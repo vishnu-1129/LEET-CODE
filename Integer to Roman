@@ -1,0 +1,23 @@
+#include <string.h>
+#include <stdlib.h>
+
+char* intToRoman(int num) {
+    // Array of Roman values sorted in descending order
+    int values[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    // Corresponding Roman numeral symbols
+    char* symbols[] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+    
+    // Max length for 3999 is 15 chars ("MMMCMXCIX") + 1 for null terminator
+    char* result = (char*)malloc(16 * sizeof(char));
+    result[0] = '\0'; // Initialize as empty string
+    
+    for (int i = 0; i < 13; i++) {
+        // While the remaining number is larger than the current Roman value
+        while (num >= values[i]) {
+            strcat(result, symbols[i]);
+            num -= values[i];
+        }
+    }
+    
+    return result;
+}
