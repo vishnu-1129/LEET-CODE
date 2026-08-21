@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+char* minWindow(char* s, char* t) {
+    int m = strlen(s);
+    int n = strlen(t);
+    
+    if (m == 0 || n == 0 || m < n) return "";
+
+    int counts[128] = {0};
+    for (int i = 0; i < n; i++) {
+        counts[(unsigned char)t[i]]++;
+    }
+
+    int left = 0, right = 0;
+    int remaining = n; 
+    int min_len = INT_MAX;
+    int start_idx = 0;
+
+    while (right < m) {
+        char right_char = s[right];
+        
+        if (counts[(unsigned char)right_char] > 0) {
+            remaining--;
+        }
+        counts[(unsigned char)right_char]--; 
+        right++;
+
+        while (remaining == 0) {
+            if (right - left < min_len) {
+                min_len = right - left;
+                start_idx = left;
+            }
+
+            char left_char = s[left];
+            counts[(unsigned char)left_char]++;
+            
+            if (counts[(unsigned char)left_char] > 0) {
+                remaining++; 
+            }
+            left++;
+        }
+    }
+
+    if (min_len == INT_MAX) return "";
+
+    char* result = (char*)malloc((min_len + 1) * sizeof(char));
+    strncpy(result, s + start_idx, min_len);
+    result[min_len] = '\0'; 
+    
+    return result;
+}
