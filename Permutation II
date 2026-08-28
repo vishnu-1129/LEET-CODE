@@ -1,0 +1,47 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+int cmp(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+void backtrack(int* nums, int numsSize, int** res, int* returnSize, int* path, int pathSize, bool* used) {
+    if (pathSize == numsSize) {
+        res[*returnSize] = (int*)malloc(numsSize * sizeof(int));
+        memcpy(res[*returnSize], path, numsSize * sizeof(int));
+        (*returnSize)++;
+        return;
+    }
+
+    for (int i = 0; i < numsSize; i++) {
+        if (used[i]) continue;
+        if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+
+        used[i] = true;
+        path[pathSize] = nums[i];
+        backtrack(nums, numsSize, res, returnSize, path, pathSize + 1, used);
+        used[i] = false;
+    }
+}
+
+int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    qsort(nums, numsSize, sizeof(int), cmp);
+    
+    int maxPerms = 40320; 
+    int** res = (int**)malloc(maxPerms * sizeof(int*));
+    bool* used = (bool*)calloc(numsSize, sizeof(bool));
+    int* path = (int*)malloc(numsSize * sizeof(int));
+    
+    *returnSize = 0;
+    backtrack(nums, numsSize, res, returnSize, path, 0, used);
+    
+    *returnColumnSizes = (int*)malloc((*returnSize) * sizeof(int));
+    for (int i = 0; i < *returnSize; i++) {
+        (*returnColumnSizes)[i] = numsSize;
+    }
+    
+    free(used);
+    free(path);
+    return res;
+}
