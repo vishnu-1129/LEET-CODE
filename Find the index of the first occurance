@@ -1,0 +1,25 @@
+#include <string.h>
+
+int strStr(char* haystack, char* needle) {
+    char* ptr = strstr(haystack, needle);
+    if (ptr != NULL) {
+        return ptr - haystack;
+    }
+    return -1;
+}
+
+int strStrManual(char* haystack, char* needle) {
+    int hLen = strlen(haystack);
+    int nLen = strlen(needle);
+
+    for (int i = 0; i <= hLen - nLen; i++) {
+        int j = 0;
+        while (j < nLen && haystack[i + j] == needle[j]) {
+            j++;
+        }
+        if (j == nLen) {
+            return i;
+        }
+    }
+    return -1;
+}
