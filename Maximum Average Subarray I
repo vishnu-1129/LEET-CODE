@@ -1,0 +1,16 @@
+double findMaxAverage(int* nums, int numsSize, int k) {
+    int ans = 0;
+
+    for (int i = 0; i < k; i++)
+        ans += nums[i];
+
+    double maxAvg = (double)ans / k;
+
+    for (int i = 1; i <= numsSize - k; i++) {
+        ans = ans - nums[i - 1] + nums[i + k - 1];
+
+        if ((double)ans / k > maxAvg) maxAvg = (double)ans / k;
+    }
+
+    return maxAvg;
+}
