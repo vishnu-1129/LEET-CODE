@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int divisorSubstrings(int num, int k) {
+    char str[12];
+    sprintf(str, "%d", num);
+    int len = strlen(str);
+    int count = 0;
+    
+    for (int i = 0; i <= len - k; i++) {
+        char sub[12] = {0};
+        strncpy(sub, str + i, k);
+        
+        int val = atoi(sub);
+        
+        if (val != 0 && num % val == 0) {
+            count++;
+        }
+    }
+    
+    return count;
+}
