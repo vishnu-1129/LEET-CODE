@@ -1,0 +1,66 @@
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 10000
+
+typedef struct {
+    int data[MAX_SIZE];
+    int top;
+} Stack;
+
+void initStack(Stack* s) {
+    s->top = -1;
+}
+
+bool isEmpty(Stack* s) {
+    return s->top == -1;
+}
+
+void push(Stack* s, int val) {
+    s->data[++(s->top)] = val;
+}
+
+int pop(Stack* s) {
+    return s->data[(s->top)--];
+}
+
+int top(Stack* s) {
+    return s->data[s->top];
+}
+
+typedef struct {
+    Stack st1, st2;
+} MyQueue;
+
+MyQueue* myQueueCreate() {
+    MyQueue* q = (MyQueue*)malloc(sizeof(MyQueue));
+    initStack(&q->st1);
+    initStack(&q->st2);
+    return q;
+}
+
+void myQueuePush(MyQueue* obj, int x) {
+    while (!isEmpty(&obj->st1)) {
+        push(&obj->st2, pop(&obj->st1));
+    }
+    push(&obj->st1, x);
+    while (!isEmpty(&obj->st2)) {
+        push(&obj->st1, pop(&obj->st2));
+    }
+}
+
+int myQueuePop(MyQueue* obj) {
+    return pop(&obj->st1);
+}
+
+int myQueuePeek(MyQueue* obj) {
+    return top(&obj->st1);
+}
+
+bool myQueueEmpty(MyQueue* obj) {
+    return isEmpty(&obj->st1);
+}
+
+void myQueueFree(MyQueue* obj) {
+    free(obj);
+}
